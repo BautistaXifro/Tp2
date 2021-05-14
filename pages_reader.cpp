@@ -14,15 +14,15 @@ int PagesReader::read(std::vector<std::string>& url_s, int offset,
              << filepath << std::endl;
         return -1;
     }
-    int start = 0;
-    while(start < size){
+    int finish = 0;
+    pages_file.seekg(offset);
+    while (finish < size){
         std::string buffer;
         getline(pages_file, buffer);
         if (pages_file.eof()) break;
-        if ((start += buffer.length()) < offset) continue;
+        finish += buffer.length();
         parser->filter_html_line(buffer, url_s);
         if (url_s.size() == 0) continue;
-        int i = 0;
         for (auto it = url_s.begin(); it != url_s.end(); ) {
             if (parser->parseUrl(*it) < 0) {
                 it = url_s.erase(it);

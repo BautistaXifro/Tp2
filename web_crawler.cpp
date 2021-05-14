@@ -16,8 +16,7 @@ int WebCrawler::fetch(Url* url, char* allowed_domain, std::vector<std::string>& 
     }
     Parser* parser = new Parser(allowed);
     this->pages_reader->read(buffer, offset, size, parser);
-    if(buffer.size() == 0) url->dead();
-    else url->explored();
+    url->explored();
     delete parser;
     return 0;
 }

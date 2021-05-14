@@ -11,8 +11,8 @@ Map::Map(std::string& index){
     int i = 0;
     for(std::string url : url_s){
         dtypes_t types;
-        types.offset = offset[i];
-        types.size = size[i];
+        types.offset = offset.at(i);
+        types.size = size.at(i);
         this->map.insert(std::pair<std::string, dtypes_t>(url, types));
         i++;
     }

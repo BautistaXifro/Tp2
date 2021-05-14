@@ -9,12 +9,9 @@ void IndexReader::read(std::vector<std::string>& url, std::vector<int>& offset,
     while (!FileReader::read(line)){
         std::string data[INDEX_PARAMETERS];
         filter_line(line, data, INDEX_PARAMETERS);
-        auto it_url = url.begin();
-        auto it_offset = offset.begin();
-        auto it_size = size.begin();
-        url.insert(it_url, data[0]);
-        offset.insert(it_offset, stoi(data[1], nullptr, 16));
-        size.insert(it_size, stoi(data[2], nullptr, 16));
+        url.push_back(data[0]);
+        offset.push_back(std::stoi(data[1], nullptr, 16));
+        size.push_back(std::stoi(data[2], nullptr, 16));
     }
 }
 
