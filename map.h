@@ -13,7 +13,7 @@ class Map{
         std::map<std::string, dtypes_t> map;
     public:
         Map(std::string& index);
-        int fetch(std::string url, int& offset, int& size);
+        int find(std::string url, int& offset, int& size);
         ~Map();
 };
 #endif

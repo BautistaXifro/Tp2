@@ -17,6 +17,7 @@ Url& Url::operator=(Url&& other){
         other.url.clear();
         other.url = nullptr;
     }
+    return *this;
 }
 
 Url::Url(Url&& other){
@@ -44,8 +45,4 @@ std::string Url::getUrl(){
     return this->url;
 }
 
-Url::~Url(){
-    this->url.clear();
-    this->state.clear();
-    delete this;
-}
+Url::~Url(){}

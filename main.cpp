@@ -1,46 +1,32 @@
 #include <iostream>
-#include <string>
 #include <vector>
-#include "parser.h"
+#include <list>
 #include "blocking_queue.h"
-#include "map.h"
+#include "web_crawler.h"
 
 int main(int argc, char* argv[]){
-    //esto es para leer el hexadecimal
-    //int prueba = std::stoi(argv[1], nullptr, 16);;
-    //std::cout << prueba << "\n";
+    //argv[1] = TARGET
+    //argv[2] = ALLOWED
+    //argv[3] = INDEX
+    //argv[4] = PAGES
 
     std::string filepath = argv[1];
-    std::string allowed = argv[2];
-    std::string index =  argv[3];
-    std::string url_string;
-    std::string prueba_index;
-    Parser* parser = new Parser(allowed);
-    BlockingQueue* blockingQueue = new BlockingQueue(filepath);
-    Map* map = new Map(index);
-
-    std::vector<Url> url_s;
-    if (blockingQueue->getSize() > 0){
-        blockingQueue->pop(url_s);
+    BlockingQueue* blocking_queue = new BlockingQueue(filepath);
+    WebCrawler* web_crawler = new WebCrawler(argv[4], argv[3]);
+    
+    Url* url_reference;
+    std::list<std::string> container;
+    while(blocking_queue->pop(url_reference) == 0){    
+        std::vector<std::string> url_s;
+        web_crawler->fetch(url_reference, argv[2], url_s);
+        for(auto url_string: url_s){
+            blocking_queue->push(url_string);
+        }
+        container.push_back()
+        std::cout << url_reference->getUrl() << " -> " << url_reference->getState() << std::endl;
+        delete url_reference;
     }
-
-
-    int offset, size;
-    map->fetch(url_s[0].getUrl(), offset, size);
-
-    std::cout << offset << std::endl;
-    std::cout << size << std::endl;
-
-    std::cout << url_s[0].getUrl() << std::endl;
-
-    if (parser->parseUrl(url_s[0].getUrl()) == 0){
-        std::cout << "URL OK\n";
-        url_s[0].explored();
-    }else{
-        std::cout << "URL BAD\n";
-        url_s[0].dead();
-    }
-
-    std::cout << url_s[0].getState() << std::endl;
+    delete blocking_queue;
+    delete web_crawler;
     return 0;
 }

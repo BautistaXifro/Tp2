@@ -31,6 +31,4 @@ static void filter_line(std::string& line, std::string* data, int length){
     }
 }
 
-IndexReader::~IndexReader(){
-    delete this;
-}
+IndexReader::~IndexReader(){}

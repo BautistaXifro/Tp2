@@ -2,28 +2,28 @@
 #include "file_reader.h"
 #include <utility>
 
-BlockingQueue::BlockingQueue(std::string& filepath){
-    FileReader* file_reader = new FileReader(filepath);
+BlockingQueue::BlockingQueue(std::string& target_filepath){
+    FileReader* file_reader = new FileReader(target_filepath);
     std::string url_string;
     while(!file_reader->read(url_string)){
-        push(Url(url_string));
+        push(url_string);
     }
+    delete file_reader;
 }
 
 //PRE: el string enviado tiene la forma de una URL.
 //Inserta el url enviado al ultimo lugar de la cola.
-void BlockingQueue::push(Url&& url){
-    //Url url_moved(std::move(url));
-    this->url_s.emplace_back(std::move(url));
+void BlockingQueue::push(std::string url_string){;
+    this->url_s.push_back(new Url(url_string));
 }
 
 // Devuelve el primer url de la cola.
-int BlockingQueue::pop(std::vector<Url>& buffer){
+int BlockingQueue::pop(Url*& url_reference){
     if(this->url_s.empty()){
         return -1;
     }
-    auto it = buffer.begin();
-    buffer.insert(it, std::move(this->url_s.front()));
+    url_reference = this->url_s.front();
+    //OJO QUE NO SE ESTA LLAMANDO AL DESTRUCTOR DE URL
     this->url_s.pop_front();
     return 0;
 }
@@ -33,7 +33,4 @@ int BlockingQueue::getSize(){
 }
 
 
-BlockingQueue::~BlockingQueue(){
-    this->url_s.~list();
-    delete this;
-}
+BlockingQueue::~BlockingQueue(){}

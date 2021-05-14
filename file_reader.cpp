@@ -2,9 +2,6 @@
 #include "parser.h"
 
 
-FileReader::FileReader(){}
-
-
 FileReader::FileReader(std::string& filepath){
     this->file.open(filepath, std::fstream::in);
      if (!file.is_open()) {
@@ -22,5 +19,4 @@ bool FileReader::read(std::string& buffer){
 
 FileReader::~FileReader(){
     this->file.close();
-    delete this;
 }

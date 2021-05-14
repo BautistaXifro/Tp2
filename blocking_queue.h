@@ -6,11 +6,11 @@
 
 class BlockingQueue{
     private:
-        std::list<Url> url_s;
+        std::list<Url*> url_s;
     public:
-        BlockingQueue(std::string& filepath);
-        int pop(std::vector<Url>& buffer);
-        void push(Url&& url);
+        BlockingQueue(std::string& target_filepath);
+        int pop(Url*& url_reference);
+        void push(std::string url);
         int getSize();
         ~BlockingQueue();
 };

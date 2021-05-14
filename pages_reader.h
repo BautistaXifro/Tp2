@@ -7,9 +7,8 @@ class PagesReader{
         std::string filepath;
     
     public:
-        PagesReader(std::string& filepath);
-        //bool read(std::string& buffer);
-        int read(std::vector<std::string>& url_s, int offset, int size, Parser& parser);
+        PagesReader(char* filepath);
+        int read(std::vector<std::string>& url_s, int offset, int size, Parser*& parser);
         ~PagesReader();
 };
 #endif
