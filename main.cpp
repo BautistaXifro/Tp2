@@ -28,15 +28,17 @@ int main(int argc, char* argv[]){
         container_state.push_back(url_reference->getState());
         delete url_reference;
     }
-    int indices[container_url.size()];
+    const int indices_count = container_url.size();
+    int* indices = new int[indices_count];
     int i = 0;
-    for (; i < container_url.size(); i++){
+    for (; i < indices_count; i++){
         indices[i] = i;
     }
-    std::sort(indices, indices+i, SortIndices(container_url));
-    for (auto indice : indices){
-        std::cout << container_url.at(indice) << " -> " << container_state.at(indice) << std::endl;
+    std::sort(indices, indices + i, SortIndices(container_url));
+    for (int indice = 0; indice < indices_count; indice++){
+        std::cout << container_url.at(indices[indice]) << " -> " << container_state.at(indices[indice]) << std::endl;
     }
+    delete[] indices;
     delete blocking_queue;
     delete web_crawler;
     return 0;

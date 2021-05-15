@@ -56,7 +56,7 @@ void Parser::filter_html_line(std::string line, std::vector<std::string>& url_s)
         int end_of_link = prot_i - line.begin();
 
         //copy html encounter
-        char aux[end_of_link + 1];
+        char* aux = new char[end_of_link + 1];
         std::size_t length = line.copy(aux, end_of_link, 0);
         aux[length] = '\0';
         aux_string = aux;
@@ -66,6 +66,7 @@ void Parser::filter_html_line(std::string line, std::vector<std::string>& url_s)
         }
         //borro de la linea el link copiado
         line.erase(0, end_of_link);
+        delete[] aux;
     }
 }
 
