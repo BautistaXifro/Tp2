@@ -9,6 +9,7 @@ class BlockingQueue{
         std::list<Url*> url_s;
     public:
         BlockingQueue(std::string& target_filepath);
+        BlockingQueue(BlockingQueue&& other);
         int pop(Url*& url_reference);
         void push(std::string url);
         int getSize();

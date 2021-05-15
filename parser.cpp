@@ -1,5 +1,6 @@
 #include "parser.h"
 #include <algorithm>
+#include <utility>
 
 static int findDomain(std::string& url_s, std::string allowedDomain);
 
@@ -7,6 +8,12 @@ Parser::Parser(){}
 
 Parser::Parser(std::string& allowedDomain){
     this->allowedDomain = allowedDomain;
+}
+
+Parser::Parser(Parser&& other){
+    this->allowedDomain = std::move(other.allowedDomain);
+
+    other.allowedDomain.clear();
 }
 
 int Parser::parseUrl(std::string url){

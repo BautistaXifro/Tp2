@@ -1,5 +1,6 @@
 #include "file_reader.h"
 #include "parser.h"
+#include <utility>
 
 
 FileReader::FileReader(std::string& filepath){
@@ -8,6 +9,12 @@ FileReader::FileReader(std::string& filepath){
         std::cout << "Error al abrir el archivo "
              << filepath << std::endl;
     }
+}
+
+FileReader::FileReader(FileReader&& other){
+    this->file = std::move(other.file);
+
+    other.file.close();
 }
 
 bool FileReader::read(std::string& buffer){

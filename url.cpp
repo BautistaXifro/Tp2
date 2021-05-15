@@ -26,7 +26,6 @@ Url::Url(Url&& other){
 
     other.state.clear();
     other.url.clear();
-    other.url = nullptr;
 }
 
 void Url::dead(){

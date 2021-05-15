@@ -10,6 +10,7 @@ class FileReader {
         std::ifstream file;
     public:
         FileReader(std::string& filepath);
+        FileReader(FileReader&& other);
         bool read(std::string& buffer);
         virtual ~FileReader();
 };

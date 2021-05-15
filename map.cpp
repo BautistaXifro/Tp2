@@ -1,6 +1,7 @@
 #include "map.h"
 #include "index_reader.h"
 #include "pages_reader.h"
+#include <utility>
 
 //PRE: Se asegura que el archivo es del estilo "url offset(hexa) size(hexa) \n" 
 Map::Map(std::string& index){
@@ -19,6 +20,11 @@ Map::Map(std::string& index){
     delete index_reader;
 }
 
+Map::Map(Map&& other){
+    this->map = std::move(other.map);
+
+    other.map.clear();
+}
 
 int Map::find(std::string url, int& offset, int& size){
     std::map<std::string, dtypes_t>::iterator iterator = 

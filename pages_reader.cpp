@@ -1,9 +1,16 @@
 #include "pages_reader.h"
 #include <fstream>
 #include <iostream>
+#include <utility>
 
 PagesReader::PagesReader(char* filepath){
     this->filepath = filepath;
+}
+
+PagesReader::PagesReader(PagesReader&& other){
+    this->filepath = std::move(other.filepath);
+
+    other.filepath.clear();
 }
 
 int PagesReader::read(std::vector<std::string>& url_s, int offset,
