@@ -1,18 +1,26 @@
 #ifndef __WEB_CRAWLER_H__
 #define __WEB_CRAWLER_H__
-#include "map.h"
+#include "protected_map.h"
 #include "pages_reader.h"
 #include "url.h"
+#include "thread.h"
+#include "protected_queue.h"
 #include <string>
 
-class WebCrawler{
+class WebCrawler : public Thread{
     private:
-        Map* map;
+        BlockingQueue& protected_queue;
+        ProtectedMap& protected_map;
         PagesReader* pages_reader;
+        char* pages_filepath;
+        char* allowed_domain;
     public:
         WebCrawler(char* pages_filepath, char* index_filepath);
+        WebCrawler(BlockingQueue& protected_queue, ProtectedMap& protected_map,
+                 char* pages_filepath, char* allowed_domain);
         WebCrawler(WebCrawler&& other);
-        int fetch(Url* url, char* allowed_domain, std::vector<std::string>& buffer);
+        int fetch(Url* url, std::vector<std::string>& buffer);
+        void run();
         ~WebCrawler();
 };
 #endif

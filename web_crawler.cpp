@@ -2,24 +2,43 @@
 #include "parser.h"
 #include <utility>
 
-WebCrawler::WebCrawler(char* pages_filepath, char* index_filepath){
+WebCrawler::WebCrawler(BlockingQueue& bq, ProtectedMap& m, char* pages_filepath,
+             char* allowed_domain) : protected_queue(bq), protected_map(m){
     this->pages_reader = new PagesReader(pages_filepath);
-    std::string aux = index_filepath;
-    this->map = new Map(aux);
+    this->allowed_domain = allowed_domain;
 }
 
-WebCrawler::WebCrawler(WebCrawler&& other){
+/*WebCrawler::WebCrawler(WebCrawler&& other){
     this->pages_reader = other.pages_reader;
-    this->map = other.map;
+    this->protected_map = std::move(other.protected_map);
+    this->protected_queue = std::move(other.protected_queue);
 
     other.pages_reader = nullptr;
-    other.map = nullptr;
+    other.protected_map.clear();
+    other.protected_queue.clear();
+}*/
+
+void WebCrawler::run(){
+    Url* url_reference;
+    std::vector<std::string> container_url;
+    std::vector<std::string> container_state;
+    //esta condicion no creo que sea correcta pero para empezar sirve
+    while (protected_queue.getSize() > 0){
+        this->protected_queue.pop(url_reference);
+        std::vector<std::string> url_s;
+        fetch(url_reference, url_s);
+        for (auto url_string: url_s){
+            this->protected_queue.push(url_string);
+        }
+        container_url.push_back(url_reference->getUrl());
+        container_state.push_back(url_reference->getState());
+    }
 }
 
-int WebCrawler::fetch(Url* url, char* allowed_domain, std::vector<std::string>& buffer){
-    std::string allowed(allowed_domain);
+int WebCrawler::fetch(Url* url, std::vector<std::string>& buffer){
+    std::string allowed(this->allowed_domain);
     int offset, size;
-    if (this->map->find(url->getUrl(), offset, size) < 0){
+    if (this->protected_map.find(url->getUrl(), offset, size) < 0){
         url->dead();
         return 0;
     }
@@ -33,5 +52,4 @@ int WebCrawler::fetch(Url* url, char* allowed_domain, std::vector<std::string>& 
 
 WebCrawler::~WebCrawler(){
     delete pages_reader;
-    delete map;
 }

@@ -8,7 +8,7 @@ class SortIndices{
      std::vector<std::string> mparr;
    public:
      SortIndices(std::vector<std::string> parr): mparr(parr){}
-     SortIndices(SortIndices&& other);
+     //SortIndices(SortIndices&& other);
      bool operator()(int i, int j) const {return *(mparr.begin() + i) < *(mparr.begin() + j);}
 };
 #endif

@@ -1,45 +1,37 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include "blocking_queue.h"
+#include <thread>
+#include "protected_queue.h"
 #include "web_crawler.h"
-#include "sort_indices.h"
 
 int main(int argc, char* argv[]){
-    //argv[1] = TARGET
-    //argv[2] = ALLOWED
-    //argv[3] = INDEX
-    //argv[4] = PAGES
+    if(argc < 7){
+        return 0;
+    }
 
+    int max_threads = std::stoi(argv[3]);
     std::string filepath = argv[1];
-    BlockingQueue* blocking_queue = new BlockingQueue(filepath);
-    WebCrawler* web_crawler = new WebCrawler(argv[4], argv[3]);
+    std::string index_filepath = argv[4];
+    BlockingQueue protected_queue(filepath);
+    ProtectedMap protected_map(index_filepath);
+
+    std::vector<Thread*> threads;
+    for(int i = 0; i < max_threads; i++){
+        threads.push_back(new WebCrawler(protected_queue, protected_map, argv[5], argv[2]));
+    }
+
+    for (int i = 0; i < max_threads; i++) {
+        threads[i]->start();
+    }
+
+    std::this_thread::sleep_for(std::chrono::seconds(std::stoi(argv[6])));
+
+    for (int i = 0; i < max_threads; i++) {
+        threads[i]->join();
+        delete threads[i];
+    }
     
-    Url* url_reference;
-    std::vector<std::string> container_url;
-    std::vector<std::string> container_state;
-    while (blocking_queue->pop(url_reference) == 0){
-        std::vector<std::string> url_s;
-        web_crawler->fetch(url_reference, argv[2], url_s);
-        for (auto url_string: url_s){
-            blocking_queue->push(url_string);
-        }
-        container_url.push_back(url_reference->getUrl());
-        container_state.push_back(url_reference->getState());
-        delete url_reference;
-    }
-    const int indices_count = container_url.size();
-    int* indices = new int[indices_count];
-    int i = 0;
-    for (; i < indices_count; i++){
-        indices[i] = i;
-    }
-    std::sort(indices, indices + i, SortIndices(container_url));
-    for (int indice = 0; indice < indices_count; indice++){
-        std::cout << container_url.at(indices[indice]) << " -> " << container_state.at(indices[indice]) << std::endl;
-    }
-    delete[] indices;
-    delete blocking_queue;
-    delete web_crawler;
+    protected_queue.print();
+
     return 0;
 }

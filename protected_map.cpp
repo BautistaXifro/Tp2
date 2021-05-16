@@ -1,10 +1,10 @@
-#include "map.h"
+#include "protected_map.h"
 #include "index_reader.h"
 #include "pages_reader.h"
 #include <utility>
 
 //PRE: Se asegura que el archivo es del estilo "url offset(hexa) size(hexa) \n" 
-Map::Map(std::string& index){
+ProtectedMap::ProtectedMap(std::string& index){
     IndexReader* index_reader = new IndexReader(index);
     std::vector<std::string> url_s;
     std::vector<int> offset, size;
@@ -14,22 +14,23 @@ Map::Map(std::string& index){
         dtypes_t types;
         types.offset = offset.at(i);
         types.size = size.at(i);
-        this->map.insert(std::pair<std::string, dtypes_t>(url, types));
+        this->protected_map.insert(std::pair<std::string, dtypes_t>(url, types));
         i++;
     }
     delete index_reader;
 }
 
-Map::Map(Map&& other){
-    this->map = std::move(other.map);
+ProtectedMap::ProtectedMap(ProtectedMap&& other){
+    this->protected_map = std::move(other.protected_map);
 
-    other.map.clear();
+    other.protected_map.clear();
 }
 
-int Map::find(std::string url, int& offset, int& size){
+int ProtectedMap::find(std::string url, int& offset, int& size){
+    std::unique_lock<std::mutex> lock(this->protected_map_mutex);
     std::map<std::string, dtypes_t>::iterator iterator = 
-            this->map.find(url);
-    if (iterator != this->map.end()){
+            this->protected_map.find(url);
+    if (iterator != this->protected_map.end()){
         offset = iterator->second.offset;
         size = iterator->second.size;
         return 0;
@@ -37,4 +38,4 @@ int Map::find(std::string url, int& offset, int& size){
     return -1;
 }
 
-Map::~Map(){}
+ProtectedMap::~ProtectedMap(){}
