@@ -1,4 +1,6 @@
 #include "index_reader.h"
+#include <string>
+#include <vector>
 #define INDEX_PARAMETERS 3
 
 static void filter_line(std::string& line, std::string* data, int length);
@@ -19,8 +21,8 @@ static void filter_line(std::string& line, std::string* data, int length){
     for (int i = 0; i < length; i++){
         char buffer[255];
         std::size_t found_space = line.find(" ");
-        std::size_t length = line.copy(buffer, found_space, 0);
-        buffer[length] = '\0';
+        std::size_t buffer_length = line.copy(buffer, found_space, 0);
+        buffer[buffer_length] = '\0';
         data[i] = buffer;
         line.erase(0, found_space);
         found_space = line.find("0");

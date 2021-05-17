@@ -1,9 +1,11 @@
 #include "web_crawler.h"
 #include <utility>
+#include <vector>
 
 
-WebCrawler::WebCrawler(BlockingQueue& bq, ProtectedMap& m, std::atomic<bool>& mr, char* pages_filepath,
-             char* allowed_domain) : protected_queue(bq), protected_map(m), mainReady(mr){
+WebCrawler::WebCrawler(BlockingQueue& bq, ProtectedMap& m,
+    std::atomic<bool>& mr, char* pages_filepath,char* allowed_domain)
+    : protected_queue(bq), protected_map(m), mainReady(mr){
     this->pages_reader = new PagesReader(pages_filepath);
     std::string allowed(allowed_domain);
     this->parser = new Parser(allowed);
@@ -13,7 +15,7 @@ void WebCrawler::run(){
     Url* url_reference;
     std::vector<std::string> container_url;
     std::vector<std::string> container_state;
-    while(!this->mainReady.load()){
+    while (!this->mainReady.load()){
         while (protected_queue.getSize() > 0){
             this->protected_queue.pop(url_reference);
             std::vector<std::string> url_s;

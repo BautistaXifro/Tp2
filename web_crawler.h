@@ -8,6 +8,7 @@
 #include "protected_queue.h"
 #include <string>
 #include <atomic>
+#include <vector>
 
 class WebCrawler : public Thread{
     private:
@@ -18,12 +19,13 @@ class WebCrawler : public Thread{
         Parser* parser;
     public:
         WebCrawler(char* pages_filepath, char* index_filepath);
-        WebCrawler(BlockingQueue& protected_queue, ProtectedMap& protected_map, std::atomic<bool>& mainReady,
+        WebCrawler(BlockingQueue& protected_queue,
+         ProtectedMap& protected_map, std::atomic<bool>& mainReady,
                  char* pages_filepath, char* allowed_domain);
         WebCrawler(WebCrawler&& other) = delete;
         WebCrawler(const WebCrawler& other) = delete;
         int fetch(Url* url, std::vector<std::string>& buffer);
-        void run();
+        void run() override;
         ~WebCrawler();
 };
 #endif

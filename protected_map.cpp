@@ -2,6 +2,7 @@
 #include "index_reader.h"
 #include "pages_reader.h"
 #include <utility>
+#include <vector>
 
 //PRE: Se asegura que el archivo es del estilo "url offset(hexa) size(hexa) \n" 
 ProtectedMap::ProtectedMap(std::string& index){
@@ -10,11 +11,12 @@ ProtectedMap::ProtectedMap(std::string& index){
     std::vector<int> offset, size;
     index_reader->read(url_s, offset, size);
     int i = 0;
-    for(std::string url : url_s){
+    for (std::string url : url_s){
         dtypes_t types;
         types.offset = offset.at(i);
         types.size = size.at(i);
-        this->protected_map.insert(std::pair<std::string, dtypes_t>(url, types));
+        this->protected_map.insert(std::pair<std::string,
+                 dtypes_t>(url, types));
         i++;
     }
     delete index_reader;

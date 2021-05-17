@@ -4,11 +4,13 @@
 #include <utility>
 #include <iostream>
 #include <algorithm>
+#include <vector>
+#include <string>
 
 BlockingQueue::BlockingQueue(std::string& target_filepath){
     FileReader* file_reader = new FileReader(target_filepath);
     std::string url_string;
-    while(!file_reader->read(url_string)){
+    while (!file_reader->read(url_string)){
         push(url_string);
     }
     delete file_reader;
@@ -25,7 +27,7 @@ void BlockingQueue::push(std::string url_string){
 // Devuelve el primer url de la cola.
 int BlockingQueue::pop(Url*& url_reference){
     std::unique_lock<std::mutex> lock(this->queue_mutex);
-    while(this->url_s.empty()){
+    while (this->url_s.empty()){
        this->cond_var.wait(lock);
     }
     url_reference = this->url_s.front();
@@ -37,7 +39,7 @@ int BlockingQueue::pop(Url*& url_reference){
 void BlockingQueue::print(){
     std::vector<std::string> container_state;
     std::vector<std::string> container_url;
-    for(auto url : this->container){
+    for (auto url : this->container){
         container_url.push_back(url->getUrl());
         container_state.push_back(url->getState());
     }
@@ -61,7 +63,7 @@ int BlockingQueue::getSize(){
 
 
 BlockingQueue::~BlockingQueue(){
-    for(auto url : this->container){
+    for (auto url : this->container){
         delete url;
     }
 }

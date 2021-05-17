@@ -19,7 +19,7 @@ FileReader::FileReader(FileReader&& other){
 
 bool FileReader::read(std::string& buffer){
     getline(this->file, buffer);
-    if(this->file.eof()){
+    if (this->file.eof()){
         return true;
     }return false;
 }

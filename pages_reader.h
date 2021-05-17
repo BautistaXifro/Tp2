@@ -2,15 +2,17 @@
 #define __PAGES_READER_H__
 #include "parser.h"
 #include <vector>
+#include <string>
 class PagesReader{
     private:
         std::string filepath;
     
     public:
-        PagesReader(char* filepath);
+        explicit PagesReader(char* filepath);
         PagesReader(PagesReader&& other);
         PagesReader(const PagesReader& other) = delete;
-        int read(std::vector<std::string>& url_s, int offset, int size, Parser*& parser);
+        int read(std::vector<std::string>& url_s,
+             int offset, int size, Parser*& parser);
         ~PagesReader();
 };
 #endif

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <utility>
+#include <string>
 
 PagesReader::PagesReader(char* filepath){
     this->filepath = filepath;
@@ -16,7 +17,7 @@ PagesReader::PagesReader(PagesReader&& other){
 int PagesReader::read(std::vector<std::string>& url_s, int offset,
                          int size, Parser*& parser){
     std::ifstream pages_file(this->filepath);
-    if(!pages_file.is_open()){
+    if (!pages_file.is_open()){
         std::cout << "Error al abrir el archivo "
              << filepath << std::endl;
         return -1;

@@ -5,7 +5,7 @@
 #include "web_crawler.h"
 
 int main(int argc, char* argv[]){
-    if(argc < 7){
+    if (argc < 7){
         return 0;
     }
 
@@ -16,8 +16,9 @@ int main(int argc, char* argv[]){
     ProtectedMap protected_map(index_filepath);
     std::atomic<bool> mainReady(false);
     std::vector<Thread*> threads;
-    for(int i = 0; i < max_threads; i++){
-        threads.push_back(new WebCrawler(protected_queue, protected_map, mainReady, argv[5], argv[2]));
+    for (int i = 0; i < max_threads; i++){
+        threads.push_back(new WebCrawler(protected_queue,
+         protected_map, mainReady, argv[5], argv[2]));
     }
 
     for (int i = 0; i < max_threads; i++) {

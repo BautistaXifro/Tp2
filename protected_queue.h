@@ -4,6 +4,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <thread>
+#include <string>
 #include "url.h"
 
 class BlockingQueue{
@@ -13,7 +14,7 @@ class BlockingQueue{
         std::mutex queue_mutex;
         std::condition_variable cond_var;
     public:
-        BlockingQueue(std::string& target_filepath);
+        explicit BlockingQueue(std::string& target_filepath);
         BlockingQueue(BlockingQueue&& other) = delete;
         BlockingQueue(const BlockingQueue& other) = delete;
         int pop(Url*& url_reference);

@@ -9,7 +9,7 @@ class FileReader {
     private:
         std::ifstream file;
     public:
-        FileReader(std::string& filepath);
+        explicit FileReader(std::string& filepath);
         FileReader(FileReader&& other);
         FileReader(const FileReader& other) = delete;
         bool read(std::string& buffer);

@@ -1,6 +1,7 @@
 #ifndef __THREAD_H__
 #define __THREAD_H__
 #include <thread>
+#include <utility>
 
 class Thread {
  private:
@@ -8,16 +9,16 @@ class Thread {
 
  public:
   Thread();
+  Thread(const Thread& other) = delete;
+  Thread(Thread&& other);
   void start();
   void join();
   virtual void run() = 0;
-  virtual ~Thread() {}
-  Thread(const Thread& other) = delete;
   Thread& operator=(const Thread&) = delete;
-  Thread(Thread&& other);
   Thread& operator=(Thread&& other) {
     this->thread = std::move(other.thread);
     return *this;
   }
+  virtual ~Thread() {}
 };
 #endif

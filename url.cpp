@@ -1,13 +1,13 @@
 #include "url.h"
 #include <utility>
 
-Url::Url(std::string& url){
+Url::Url(const std::string& url){
     this->url = url;
     this->state = "ready";
 }
 
 Url& Url::operator=(Url&& other){
-    if(this != &other){
+    if (this != &other){
         this->url.clear();
 
         this->url = std::move(other.url);
@@ -15,7 +15,6 @@ Url& Url::operator=(Url&& other){
 
         other.state.clear();
         other.url.clear();
-        other.url = nullptr;
     }
     return *this;
 }
