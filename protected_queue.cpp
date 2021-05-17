@@ -58,6 +58,7 @@ void BlockingQueue::print(){
 }
 
 int BlockingQueue::getSize(){
+    std::unique_lock<std::mutex> lock(this->queue_mutex);
     return this->url_s.size();
 }
 
