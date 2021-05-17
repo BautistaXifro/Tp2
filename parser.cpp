@@ -14,7 +14,7 @@ Parser::Parser(Parser&& other){
     other.allowedDomain.clear();
 }
 
-int Parser::parseUrl(std::string url){
+int Parser::parseUrl(const std::string& url){
     std::string aux = url;
     std::string http = "http://";
     if (aux.compare(0, http.length(), http) == 0 &&

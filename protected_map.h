@@ -4,10 +4,10 @@
 #include <string>
 #include <mutex>
 
-typedef struct dtypes{
+struct dtypes_t{
     int offset;
     int size;
-}dtypes_t;
+};
 
 class ProtectedMap{
     private:
