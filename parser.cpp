@@ -14,7 +14,7 @@ Parser::Parser(Parser&& other){
     other.allowedDomain.clear();
 }
 
-int Parser::parseUrl(const std::string url){
+int Parser::parseUrl(std::string url){
     std::string aux = url;
     std::string http = "http://";
     if (aux.compare(0, http.length(), http) == 0 &&
@@ -42,8 +42,7 @@ static int findDomain(std::string& url_s, std::string allowedDomain) {
         url_s.erase(0, allowedDomain.length() + start_position);
         if (url_s.length() == 0){
             return 0;
-        }
-        else{
+        }else{
             return -1;
         } 
     }
