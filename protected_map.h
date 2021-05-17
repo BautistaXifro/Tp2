@@ -3,15 +3,11 @@
 #include <map>
 #include <string>
 #include <mutex>
-
-struct dtypes_t{
-    int offset;
-    int size;
-};
+#include <vector>
 
 class ProtectedMap{
     private:
-        std::map<std::string, dtypes_t> protected_map;
+        std::map<std::string, std::vector<int>> protected_map;
         std::mutex protected_map_mutex;
     public:
         explicit ProtectedMap(std::string& index);

@@ -12,11 +12,11 @@ ProtectedMap::ProtectedMap(std::string& index){
     index_reader->read(url_s, offset, size);
     int i = 0;
     for (std::string url : url_s){
-        dtypes_t types;
-        types.offset = offset.at(i);
-        types.size = size.at(i);
+        std::vector<int> offsetSize;
+        offsetSize.push_back(offset.at(i));
+        offsetSize.push_back(size.at(i));
         this->protected_map.insert(std::pair<std::string,
-                 dtypes_t>(url, types));
+                 std::vector<int>>(url, offsetSize));
         i++;
     }
     delete index_reader;
@@ -24,11 +24,11 @@ ProtectedMap::ProtectedMap(std::string& index){
 
 int ProtectedMap::find(std::string url, int& offset, int& size){
     std::unique_lock<std::mutex> lock(this->protected_map_mutex);
-    std::map<std::string, dtypes_t>::iterator iterator = 
+    std::map<std::string, std::vector<int>>::iterator iterator = 
             this->protected_map.find(url);
     if (iterator != this->protected_map.end()){
-        offset = iterator->second.offset;
-        size = iterator->second.size;
+        offset = iterator->second.at(0);
+        size = iterator->second.at(1);
         return 0;
     }
     return -1;
