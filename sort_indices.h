@@ -5,10 +5,9 @@
 
 class SortIndices{
    private:
-     std::vector<std::string> mparr;
+     std::vector<std::string> compare_vector;
    public:
-     SortIndices(std::vector<std::string> parr): mparr(parr){}
-     //SortIndices(SortIndices&& other);
-     bool operator()(int i, int j) const {return *(mparr.begin() + i) < *(mparr.begin() + j);}
+     SortIndices(std::vector<std::string> vector): compare_vector(vector){}
+     bool operator()(int i, int j) const {return *(compare_vector.begin() + i) < *(compare_vector.begin() + j);}
 };
 #endif

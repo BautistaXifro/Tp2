@@ -15,7 +15,8 @@ class ProtectedMap{
         std::mutex protected_map_mutex;
     public:
         ProtectedMap(std::string& index);
-        ProtectedMap(ProtectedMap&& other);
+        ProtectedMap(ProtectedMap&& other) = delete;
+        ProtectedMap(const ProtectedMap& other) = delete;
         int find(std::string url, int& offset, int& size);
         ~ProtectedMap();
 };

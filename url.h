@@ -11,6 +11,7 @@ class Url{
         Url(std::string& url);
         Url(Url&& other); //move constructor
         Url& operator=(Url&& other);
+        Url(const Url& other) = delete;
         void explored();
         void dead();
         std::string getState();

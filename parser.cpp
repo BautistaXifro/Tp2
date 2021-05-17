@@ -48,7 +48,7 @@ static int findDomain(std::string& url_s, std::string allowedDomain) {
     return -1; //ignorar URL no posee el allowedDomain
 }
 
-void Parser::filter_html_line(std::string line, std::vector<std::string>& url_s){
+void Parser::filterHtmlLine(std::string line, std::vector<std::string>& url_s){
     std::string aux_string;
     while (line.length() != 0){
         std::string prot_end("http");

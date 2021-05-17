@@ -4,21 +4,24 @@
 #include "pages_reader.h"
 #include "url.h"
 #include "thread.h"
+#include "parser.h"
 #include "protected_queue.h"
 #include <string>
+#include <atomic>
 
 class WebCrawler : public Thread{
     private:
         BlockingQueue& protected_queue;
         ProtectedMap& protected_map;
+        std::atomic<bool>& mainReady;
         PagesReader* pages_reader;
-        char* pages_filepath;
-        char* allowed_domain;
+        Parser* parser;
     public:
         WebCrawler(char* pages_filepath, char* index_filepath);
-        WebCrawler(BlockingQueue& protected_queue, ProtectedMap& protected_map,
+        WebCrawler(BlockingQueue& protected_queue, ProtectedMap& protected_map, std::atomic<bool>& mainReady,
                  char* pages_filepath, char* allowed_domain);
-        WebCrawler(WebCrawler&& other);
+        WebCrawler(WebCrawler&& other) = delete;
+        WebCrawler(const WebCrawler& other) = delete;
         int fetch(Url* url, std::vector<std::string>& buffer);
         void run();
         ~WebCrawler();

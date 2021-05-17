@@ -14,8 +14,8 @@ class BlockingQueue{
         std::condition_variable cond_var;
     public:
         BlockingQueue(std::string& target_filepath);
-        BlockingQueue(BlockingQueue&& other);
-        void start(Url*& url_reference);
+        BlockingQueue(BlockingQueue&& other) = delete;
+        BlockingQueue(const BlockingQueue& other) = delete;
         int pop(Url*& url_reference);
         void push(std::string url);
         void print();

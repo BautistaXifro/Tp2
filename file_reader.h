@@ -11,6 +11,7 @@ class FileReader {
     public:
         FileReader(std::string& filepath);
         FileReader(FileReader&& other);
+        FileReader(const FileReader& other) = delete;
         bool read(std::string& buffer);
         virtual ~FileReader();
 };

@@ -28,7 +28,7 @@ int PagesReader::read(std::vector<std::string>& url_s, int offset,
         getline(pages_file, buffer);
         if (pages_file.eof()) break;
         finish += buffer.length();
-        parser->filter_html_line(buffer, url_s);
+        parser->filterHtmlLine(buffer, url_s);
         if (url_s.size() == 0) continue;
         for (auto it = url_s.begin(); it != url_s.end(); ) {
             if (parser->parseUrl(*it) < 0) {

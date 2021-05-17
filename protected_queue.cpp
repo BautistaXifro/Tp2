@@ -14,11 +14,6 @@ BlockingQueue::BlockingQueue(std::string& target_filepath){
     delete file_reader;
 }
 
-BlockingQueue::BlockingQueue(BlockingQueue&& other){
-    this->url_s = std::move(other.url_s);
-    other.url_s.clear();
-}
-
 //PRE: el string enviado tiene la forma de una URL.
 //Inserta el url enviado al ultimo lugar de la cola.
 void BlockingQueue::push(std::string url_string){

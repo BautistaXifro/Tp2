@@ -20,12 +20,6 @@ ProtectedMap::ProtectedMap(std::string& index){
     delete index_reader;
 }
 
-ProtectedMap::ProtectedMap(ProtectedMap&& other){
-    this->protected_map = std::move(other.protected_map);
-
-    other.protected_map.clear();
-}
-
 int ProtectedMap::find(std::string url, int& offset, int& size){
     std::unique_lock<std::mutex> lock(this->protected_map_mutex);
     std::map<std::string, dtypes_t>::iterator iterator = 
