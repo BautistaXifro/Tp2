@@ -17,14 +17,12 @@ BlockingQueue::BlockingQueue(std::string& target_filepath){
 }
 
 //PRE: el string enviado tiene la forma de una URL.
-//Inserta el url enviado al ultimo lugar de la cola.
 void BlockingQueue::push(std::string url_string){
     std::unique_lock<std::mutex> lock(this->queue_mutex);
-    this->url_s.push_back(new Url(url_string));
+    this->url_s.push(new Url(url_string));
     this->cond_var.notify_all();
 }
 
-// Devuelve el primer url de la cola.
 int BlockingQueue::pop(Url*& url_reference){
     std::unique_lock<std::mutex> lock(this->queue_mutex);
     while (this->url_s.empty()){
@@ -32,7 +30,7 @@ int BlockingQueue::pop(Url*& url_reference){
     }
     url_reference = this->url_s.front();
     this->container.push_back(this->url_s.front());
-    this->url_s.pop_front();
+    this->url_s.pop();
     return 0;
 }
 

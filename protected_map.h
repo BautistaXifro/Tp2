@@ -12,6 +12,8 @@ class ProtectedMap{
     public:
         explicit ProtectedMap(std::string& index);
         ProtectedMap(ProtectedMap&& other) = delete;
+        //opte por no hacer movible esta clase ya que tiene como
+        //atributo un mutex y este no se debe mover
         ProtectedMap(const ProtectedMap& other) = delete;
         int find(std::string url, int& offset, int& size);
         ~ProtectedMap();
