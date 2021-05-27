@@ -42,6 +42,7 @@ void Printer::print(){
 }
 
 void Printer::almacenate(Url& url){
+    std::unique_lock<std::mutex> lock(this->printer_mutex);
     this->container.emplace_back(std::move(url));
 }
 

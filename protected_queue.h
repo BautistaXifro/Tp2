@@ -3,7 +3,6 @@
 #include <list>
 #include <mutex>
 #include <condition_variable>
-#include <thread>
 #include <string>
 #include "url.h"
 
