@@ -15,7 +15,7 @@ class FileManager{
         std::string index_filepath;
 
     public:
-        explicit FileManager(char*& target_filepath, char*& index_filepath);
+        explicit FileManager(const char*& target_filepath, const char*& index_filepath);
         FileManager(FileManager&& other);
         void fill(ProtectedMap* map);
         void fill(ProtectedQueue* queue);

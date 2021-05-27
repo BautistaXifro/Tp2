@@ -9,7 +9,7 @@ class Url{
         std::string state;
     public:
         explicit Url(const std::string& url);
-        Url(){};
+        Url(){}
         Url(Url&& other); //move constructor
         Url& operator=(Url&& other);
         Url(const Url& other) = delete;

@@ -21,8 +21,9 @@ class WebCrawler : public Thread{
         std::string pages_filepath;
     public:
         WebCrawler(ProtectedQueue& protected_queue,
-         ProtectedMap& protected_map, std::atomic<bool>& mainReady,
-            Printer& printer, char*& pages_filepath, char*& allowed_domain);
+        ProtectedMap& protected_map,
+        std::atomic<bool>& mainReady,Printer& printer,
+        const char*& pages_filepath, const char*& allowed_domain);
         WebCrawler(WebCrawler&& other) = delete;
         WebCrawler(const WebCrawler& other) = delete;
         int fetch(Url* url, std::vector<std::string>& buffer);

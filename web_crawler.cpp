@@ -4,8 +4,9 @@
 #include <iostream>
 
 
-WebCrawler::WebCrawler(ProtectedQueue& bq, ProtectedMap& m, std::atomic<bool>& mr,
-             Printer& p, char*& pages_filepath, char*& allowed_domain)
+WebCrawler::WebCrawler(ProtectedQueue& bq, ProtectedMap& m,
+    std::atomic<bool>& mr, Printer& p,
+    const char*& pages_filepath, const char*& allowed_domain)
     : protected_queue(bq), protected_map(m), mainReady(mr), printer(p){
     this->allowed_domain = allowed_domain;
     this->pages_filepath = pages_filepath;

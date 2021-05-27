@@ -14,13 +14,12 @@ class ProtectedQueue{
         std::mutex queue_mutex;
         std::condition_variable cond_var;
     public:
-        explicit ProtectedQueue();
+        ProtectedQueue();
         ProtectedQueue(ProtectedQueue&& other) = delete;
         //opte por no hacer movible esta clase ya que tiene como
         //atributo un mutex y un condition_variable
         //ambos no se deben mover
         ProtectedQueue(const ProtectedQueue& other) = delete;
-        //int pop(Url*& url_reference, std::atomic<bool>& mainReady);
         int pop(Url& url, std::atomic<bool>& mainReady);
         void close();
         void push(const std::string& url);
