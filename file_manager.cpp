@@ -4,7 +4,8 @@
 #include <utility>
 #include <vector>
 
-FileManager::FileManager(const char* target_filepath, const char* index_filepath){
+FileManager::FileManager(const char* target_filepath,
+             const char* index_filepath){
     this->target_filepath = target_filepath;
     this->index_filepath = index_filepath;
 }
