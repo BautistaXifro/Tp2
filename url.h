@@ -1,6 +1,7 @@
 #ifndef __URL_H__
 #define __URL_H__
 #include <string>
+#include <atomic>
 
 class Url{
     private:
@@ -8,6 +9,7 @@ class Url{
         std::string state;
     public:
         explicit Url(const std::string& url);
+        Url(){};
         Url(Url&& other); //move constructor
         Url& operator=(Url&& other);
         Url(const Url& other) = delete;

@@ -7,23 +7,25 @@
 #include <string>
 #include "url.h"
 
-class BlockingQueue{
+class ProtectedQueue{
     private:
-        std::list<Url*> url_s;
-        std::list<Url*> container;
+        std::list<Url> url_s;
+        std::list<Url> container;
         std::mutex queue_mutex;
         std::condition_variable cond_var;
     public:
-        explicit BlockingQueue(std::string& target_filepath);
-        BlockingQueue(BlockingQueue&& other) = delete;
+        explicit ProtectedQueue();
+        ProtectedQueue(ProtectedQueue&& other) = delete;
         //opte por no hacer movible esta clase ya que tiene como
         //atributo un mutex y un condition_variable
         //ambos no se deben mover
-        BlockingQueue(const BlockingQueue& other) = delete;
-        int pop(Url*& url_reference);
-        void push(std::string url);
+        ProtectedQueue(const ProtectedQueue& other) = delete;
+        //int pop(Url*& url_reference, std::atomic<bool>& mainReady);
+        int pop(Url& url, std::atomic<bool>& mainReady);
+        void close();
+        void push(const std::string& url);
         void print();
         int getSize();
-        ~BlockingQueue();
+        ~ProtectedQueue();
 };
 #endif

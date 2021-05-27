@@ -38,3 +38,34 @@ Diagrama que muestra el comportamiento de un thread.
 
 ## Conclusión
 Este tp me resulto complejo sobretodo la parte de la programación de los threads los cuales se comportan de forma muy distinta a la ejecución de los programas que venia programando hasta ahora. Me pareció muy interesante todo este concepto y estas nuevas herramientas.
+
+## Corrección post entrega
+En la corrección se me indico que ```ProtectedQueue``` y ```ProtectedMap``` cumplían mas funciones de las que deberían, por lo tanto decidí crear 2 nuevas clases una llamada ```FileManager``` la cual es la encargada de leer los archivos ```target``` e ```index``` para obtener los datos de ellos y luego introducirlos a la queue y al map respectivamente. Por ultimo agregue otra clase llamada ```Printer``` la cual se encarga de ir acumulando las URLs que se van leyendo para luego poder imprimirlas ordenadamente como indica el enunciado. Con estas clases saco responsabilidades al ```ProtectedMap``` y al ```ProtectedQueue``` cumpliendo con TDA y encapsulamiento.
+
+También se me indico que estaba usando demasiado el *heap* hice correcciones al respecto y ahora aloco todo en el stack. Me quedo un solo caso donde aloco en el heap.
+
+```
+    std::vector<std::string> container_state;
+    std::vector<std::string> container_url;
+    for (auto &url : this->container){
+        container_url.push_back(url.getUrl());
+        container_state.push_back(url.getState());
+    }
+    const int indices_count = container_url.size();
+    int* indices = new int[indices_count]; 
+    int i = 0;
+    for (; i < indices_count; i++){
+        indices[i] = i;
+    }
+    std::sort(indices, indices + i, SortIndices(container_url));
+    for (int indice = 0; indice < indices_count; indice++){
+        std::cout << container_url.at(indices[indice]) << " -> "
+                 << container_state.at(indices[indice]) << std::endl;
+    }
+    delete[] indices;
+
+```
+
+Justifico este uso del heap ya que estoy creando un vector de *int* el cual no conozco su tamaño, mi variable *indices_count* depende de la cantidad de URLs que el web crawler haya encontrado, es por esto que aloco memoria en el heap ya que no conozco un posible maximo.
+
+Por ultimo el deadlock fue arreglado ya que cuando el thread main *despierta* ahora no solo coloca el atomic boolean en verdadero sino que también llama a una función de la queue que *despierta* al thread que estaba en la condition variable y coloqué mas condiciones que hacen salir del loop a los threads si main ya *despertó*.

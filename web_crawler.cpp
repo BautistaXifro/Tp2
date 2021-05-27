@@ -1,31 +1,27 @@
 #include "web_crawler.h"
 #include <utility>
 #include <vector>
+#include <iostream>
 
 
-WebCrawler::WebCrawler(BlockingQueue& bq, ProtectedMap& m,
-    std::atomic<bool>& mr, char* pages_filepath,char* allowed_domain)
-    : protected_queue(bq), protected_map(m), mainReady(mr){
-    this->pages_reader = new PagesReader(pages_filepath);
-    std::string allowed(allowed_domain);
-    this->parser = new Parser(allowed);
+WebCrawler::WebCrawler(ProtectedQueue& bq, ProtectedMap& m, std::atomic<bool>& mr,
+             Printer& p, char*& pages_filepath, char*& allowed_domain)
+    : protected_queue(bq), protected_map(m), mainReady(mr), printer(p){
+    this->allowed_domain = allowed_domain;
+    this->pages_filepath = pages_filepath;
 }
 
 void WebCrawler::run(){
-    Url* url_reference;
-    std::vector<std::string> container_url;
-    std::vector<std::string> container_state;
     while (!this->mainReady.load()){
-        while (protected_queue.getSize() > 0){
-            this->protected_queue.pop(url_reference);
-            std::vector<std::string> url_s;
-            fetch(url_reference, url_s);
-            for (auto url_string: url_s){
-                this->protected_queue.push(url_string);
-            }
-            container_url.push_back(url_reference->getUrl());
-            container_state.push_back(url_reference->getState());
+        Url url;
+        if (this->protected_queue.pop(url,
+                     this->mainReady) == 1) break;
+        std::vector<std::string> url_s;
+        fetch(&url, url_s);
+        for (auto url_string: url_s){
+            this->protected_queue.push(url_string);
         }
+        this->printer.almacenate(url);
     }
 }
 
@@ -35,13 +31,11 @@ int WebCrawler::fetch(Url* url, std::vector<std::string>& buffer){
         url->dead();
         return 0;
     }
-    this->pages_reader->read(buffer, offset, size, this->parser);
+    PagesReader pages_reader(this->pages_filepath, this->allowed_domain);
+    pages_reader.read(buffer, offset, size);
     url->explored();
     return 0;
 }
 
 
-WebCrawler::~WebCrawler(){
-    delete pages_reader;
-    delete parser;
-}
+WebCrawler::~WebCrawler(){}

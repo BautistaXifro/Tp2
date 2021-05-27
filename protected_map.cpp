@@ -5,21 +5,11 @@
 #include <vector>
 
 //PRE: Se asegura que el archivo es del estilo "url offset(hexa) size(hexa) \n" 
-ProtectedMap::ProtectedMap(std::string& index){
-    IndexReader* index_reader = new IndexReader(index);
-    std::vector<std::string> url_s;
-    std::vector<int> offset, size;
-    index_reader->read(url_s, offset, size);
-    int i = 0;
-    for (std::string url : url_s){
-        std::vector<int> offsetSize;
-        offsetSize.push_back(offset.at(i));
-        offsetSize.push_back(size.at(i));
-        this->protected_map.insert(std::pair<std::string,
-                 std::vector<int>>(url, offsetSize));
-        i++;
-    }
-    delete index_reader;
+ProtectedMap::ProtectedMap(){}
+
+void ProtectedMap::insert(std::string& key,std::vector<int>& value){
+    this->protected_map.insert(std::pair<std::string,
+                 std::vector<int>>(key, value));
 }
 
 int ProtectedMap::find(std::string url, int& offset, int& size){
